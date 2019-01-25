@@ -65,18 +65,7 @@ public class ExecuteTemplate {
                 executor = new PlainExecutor<T, S>(statementProxy, statementCallback, sqlRecognizer);
                 break;
         }
-        T rs = null;
-        try {
-            rs = executor.execute(args);
 
-        } catch (Throwable ex) {
-            if (ex instanceof SQLException) {
-                throw (SQLException) ex;
-            } else {
-                // Turn everything into SQLException
-                new SQLException(ex);
-            }
-        }
-        return rs;
+        return executor.execute(args);
     }
 }

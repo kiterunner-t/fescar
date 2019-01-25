@@ -19,6 +19,7 @@ package com.alibaba.fescar.rm.datasource.exec;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Savepoint;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -30,18 +31,18 @@ import com.alibaba.fescar.rm.datasource.sql.SQLRecognizer;
 import com.alibaba.fescar.rm.datasource.sql.SQLSelectRecognizer;
 import com.alibaba.fescar.rm.datasource.sql.struct.TableRecords;
 
-public class SelectForUpdateExecutor<S extends Statement> extends BaseTransactionalExecutor<ResultSet, S> {
+public class SelectForUpdateExecutor<S extends Statement> extends BaseTransactionalExecutor<Boolean, S> {
 
-    public SelectForUpdateExecutor(StatementProxy<S> statementProxy, StatementCallback<ResultSet, S> statementCallback, SQLRecognizer sqlRecognizer) {
+    public SelectForUpdateExecutor(StatementProxy<S> statementProxy, StatementCallback<Boolean, S> statementCallback, SQLRecognizer sqlRecognizer) {
         super(statementProxy, statementCallback, sqlRecognizer);
     }
 
     @Override
-    public Object doExecute(Object... args) throws Throwable {
+    public Object doExecute(Object... args) throws SQLException {
         SQLSelectRecognizer recognizer = (SQLSelectRecognizer) sqlRecognizer;
 
         Connection conn = statementProxy.getConnection();
-        ResultSet rs = null;
+        Boolean rs = null;
         Savepoint sp = null;
         LockRetryController lockRetryController = new LockRetryController();
         boolean originalAutoCommit = conn.getAutoCommit();

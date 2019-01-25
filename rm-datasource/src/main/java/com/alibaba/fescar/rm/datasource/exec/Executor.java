@@ -16,7 +16,9 @@
 
 package com.alibaba.fescar.rm.datasource.exec;
 
+import java.sql.SQLException;
+
 public interface Executor<T> {
 
-    T execute(Object... args) throws Throwable;
+    T execute(Object... args) throws SQLException;
 }

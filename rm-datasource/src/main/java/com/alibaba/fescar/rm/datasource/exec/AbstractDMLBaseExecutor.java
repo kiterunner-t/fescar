@@ -36,7 +36,7 @@ public abstract class AbstractDMLBaseExecutor<T, S extends Statement> extends Ba
     }
 
     @Override
-    public T doExecute(Object... args) throws Throwable {
+    public T doExecute(Object... args) throws SQLException {
         AbstractConnectionProxy connectionProxy = statementProxy.getConnectionProxy();
         if (connectionProxy.getAutoCommit()) {
             return executeAutoCommitTrue(args);
@@ -45,7 +45,7 @@ public abstract class AbstractDMLBaseExecutor<T, S extends Statement> extends Ba
         }
     }
 
-    protected T executeAutoCommitFalse(Object[] args) throws Throwable {
+    protected T executeAutoCommitFalse(Object[] args) throws SQLException {
         TableRecords beforeImage = beforeImage();
         T result = statementCallback.execute(statementProxy.getTargetStatement(), args);
         TableRecords afterImage = afterImage(beforeImage);
@@ -53,7 +53,7 @@ public abstract class AbstractDMLBaseExecutor<T, S extends Statement> extends Ba
         return result;
     }
 
-    protected T executeAutoCommitTrue(Object[] args) throws Throwable {
+    protected T executeAutoCommitTrue(Object[] args) throws SQLException {
         T result = null;
         AbstractConnectionProxy connectionProxy = statementProxy.getConnectionProxy();
         LockRetryController lockRetryController = new LockRetryController();

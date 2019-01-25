@@ -16,6 +16,7 @@
 
 package com.alibaba.fescar.rm.datasource.exec;
 
+import java.sql.SQLException;
 import java.sql.Statement;
 
 import com.alibaba.fescar.rm.datasource.StatementProxy;
@@ -36,7 +37,7 @@ public class PlainExecutor<T, S extends Statement> implements Executor {
     }
 
     @Override
-    public T execute(Object... args) throws Throwable {
+    public T execute(Object... args) throws SQLException {
         return statementCallback.execute(statementProxy.getTargetStatement(), args);
     }
 }

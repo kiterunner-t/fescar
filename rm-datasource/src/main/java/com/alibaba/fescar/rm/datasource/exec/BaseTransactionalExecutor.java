@@ -44,13 +44,13 @@ public abstract class BaseTransactionalExecutor<T, S extends Statement> implemen
     }
 
     @Override
-    public Object execute(Object... args) throws Throwable {
+    public Object execute(Object... args) throws SQLException {
         String xid = RootContext.getXID();
         statementProxy.getConnectionProxy().bind(xid);
         return doExecute(args);
     }
 
-    protected abstract Object doExecute(Object... args) throws Throwable;
+    protected abstract Object doExecute(Object... args) throws SQLException;
 
     protected String buildWhereConditionByPKs(List<Field> pkRows) throws SQLException {
         StringBuffer whereConditionAppender = new StringBuffer();
